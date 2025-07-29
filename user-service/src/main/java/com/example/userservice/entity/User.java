@@ -1,36 +1,36 @@
 package com.example.userservice.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name is required")
+    @NotBlank
+    @Column(nullable = false)
     private String name;
 
-    @Email(message = "Email should be valid")
-    @Column(unique = true, nullable = false)
+    @Email
+    @NotBlank
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @NotBlank(message = "Phone is required")
+    @NotBlank
+    @Column(nullable = false)
     private String phone;
 
-    @PositiveOrZero
+    @Column(nullable = false)
     private Integer totalOrders = 0;
 
-    @PositiveOrZero
+    @Column(nullable = false)
     private Double totalSpent = 0.0;
 }
