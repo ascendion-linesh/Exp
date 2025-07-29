@@ -1,14 +1,13 @@
 package com.example.orderservice.feign;
 
-import com.example.orderservice.dto.DiscountResponseDto;
+import com.example.orderservice.feign.dto.DiscountRequestDto;
+import com.example.orderservice.feign.dto.DiscountResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.math.BigDecimal;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "rewards-service", url = "${rewards-service.url}")
 public interface RewardsServiceClient {
-    @GetMapping("/rewards/discount")
-    DiscountResponseDto getDiscount(@RequestParam("userId") Long userId, @RequestParam("amount") BigDecimal amount);
+    @PostMapping("/api/rewards/discount")
+    DiscountResponseDto calculateDiscount(@RequestBody DiscountRequestDto requestDto);
 }
