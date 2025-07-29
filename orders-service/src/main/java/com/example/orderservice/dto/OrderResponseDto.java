@@ -1,37 +1,23 @@
 package com.example.orderservice.dto;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class OrderResponseDto {
-    private Long orderId;
+    private UUID id;
     private Long userId;
-    private BigDecimal totalAmount;
-    private BigDecimal discount;
-    private BigDecimal finalAmount;
-    private LocalDateTime createdAt;
-
-    public OrderResponseDto() {}
-
-    public OrderResponseDto(Long orderId, Long userId, BigDecimal totalAmount, BigDecimal discount, BigDecimal finalAmount, LocalDateTime createdAt) {
-        this.orderId = orderId;
-        this.userId = userId;
-        this.totalAmount = totalAmount;
-        this.discount = discount;
-        this.finalAmount = finalAmount;
-        this.createdAt = createdAt;
-    }
-
-    public Long getOrderId() { return orderId; }
-    public void setOrderId(Long orderId) { this.orderId = orderId; }
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
-    public BigDecimal getTotalAmount() { return totalAmount; }
-    public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
-    public BigDecimal getDiscount() { return discount; }
-    public void setDiscount(BigDecimal discount) { this.discount = discount; }
-    public BigDecimal getFinalAmount() { return finalAmount; }
-    public void setFinalAmount(BigDecimal finalAmount) { this.finalAmount = finalAmount; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    private List<CartItemDto> cartItems;
+    private Double totalAmount;
+    private Double discount;
+    private Instant createdAt;
 }
