@@ -1,42 +1,54 @@
 package com.example.orderservice.entity;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
 
     @Column(nullable = false)
     private Long userId;
 
-    @Column(nullable = false)
-    private BigDecimal totalAmount;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "order_cart_items", joinColumns = @JoinColumn(name = "order_id"))
+    private List<CartItem> cartItems;
 
     @Column(nullable = false)
-    private BigDecimal discount;
+    private Double totalAmount;
 
     @Column(nullable = false)
-    private BigDecimal finalAmount;
+    private Double discount;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
 
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
-    public BigDecimal getTotalAmount() { return totalAmount; }
-    public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
-    public BigDecimal getDiscount() { return discount; }
-    public void setDiscount(BigDecimal discount) { this.discount = discount; }
-    public BigDecimal getFinalAmount() { return finalAmount; }
-    public void setFinalAmount(BigDecimal finalAmount) { this.finalAmount = finalAmount; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = Instant.now();
+    }
+
+    @Embeddable
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class CartItem {
+        private Long productId;
+        private Integer quantity;
+    }
 }
