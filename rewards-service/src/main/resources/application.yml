@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rewardsdb
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: rewards-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+    listener:
+      missing-topics-fatal: false
+
+# Talon.One API configuration
+# Replace with your actual API endpoint and key
+# Example: https://yourcompany.talon.one
+# Example: xxxxxxxx
+talonone:
+  api:
+    url: https://yourcompany.talon.one
+    key: xxxxxxxx
+
+server:
+  port: 8082
